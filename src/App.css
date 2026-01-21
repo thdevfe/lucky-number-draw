@@ -1,0 +1,52 @@
+.app {
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff; /* Adjust for visibility on custom backgrounds */
+  }
+  
+  .logo {
+    width: 100px;
+    height: auto;
+  }
+  
+  .settings-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    color: black;
+    z-index: 10;
+  }
+  
+  .digit-boxes {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .digit-box {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #fff;
+    margin: 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  .digit-box.revealed {
+    opacity: 1;
+  }
+  
