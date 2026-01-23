@@ -79,6 +79,14 @@ export default function LuckyNumberGenerator() {
         number: row.number,
         user: row.user
       }));
+
+      // Auto-detect max digits
+      if (validEntries.length > 0) {
+        const maxNum = Math.max(...validEntries.map(e => e.number));
+        const detectedDigits = maxNum.toString().length;
+        setSettings(prev => ({ ...prev, digits: detectedDigits, maxValue: Math.pow(10, detectedDigits) - 1, minValue: 0 }));
+      }
+
       setEntries(validEntries);
       setRemainingEntries(validEntries);
     };
@@ -543,14 +551,15 @@ export default function LuckyNumberGenerator() {
 
               <div className="p-6 space-y-5 overflow-y-auto" style={{ maxHeight: 'calc(70vh - 180px)' }}>
                 {/* Number of Digits */}
-                <div>
+                <div className={entries.length > 0 ? "opacity-50 pointer-events-none" : ""}>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Number of Digits
+                    Number of Digits {entries.length > 0 && "(Locked by Excel)"}
                   </label>
                   <input
                     type="number"
                     min="1"
                     max="10"
+                    disabled={entries.length > 0}
                     value={settings.digits}
                     onChange={(e) => {
                       const digits = parseInt(e.target.value) || 1;
@@ -562,12 +571,13 @@ export default function LuckyNumberGenerator() {
                 </div>
 
                 {/* Min Value */}
-                <div>
+                <div className={entries.length > 0 ? "opacity-50 pointer-events-none" : ""}>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Minimum Value
+                    Minimum Value {entries.length > 0 && "(Locked by Excel)"}
                   </label>
                   <input
                     type="number"
+                    disabled={entries.length > 0}
                     value={settings.minValue}
                     onChange={(e) => handleSettingChange('minValue', parseInt(e.target.value) || 0)}
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -575,12 +585,13 @@ export default function LuckyNumberGenerator() {
                 </div>
 
                 {/* Max Value */}
-                <div>
+                <div className={entries.length > 0 ? "opacity-50 pointer-events-none" : ""}>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Maximum Value
+                    Maximum Value {entries.length > 0 && "(Locked by Excel)"}
                   </label>
                   <input
                     type="number"
+                    disabled={entries.length > 0}
                     value={settings.maxValue}
                     onChange={(e) => handleSettingChange('maxValue', parseInt(e.target.value) || 9999)}
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -767,12 +778,35 @@ export default function LuckyNumberGenerator() {
                     Excel should have 2 columns: number and user name
                     {entries.length > 0 && ` (${entries.length} entries loaded, ${remainingEntries.length} remaining)`}
                   </p>
-                  <input
-                    type="file"
-                    accept=".xlsx,.xls"
-                    onChange={handleExcelUpload}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700"
-                  />
+                  <div className="flex gap-3">
+                    <input
+                      type="file"
+                      id="excel-upload"
+                      accept=".xlsx,.xls"
+                      onChange={handleExcelUpload}
+                      className="hidden"
+                    />
+                    <label
+                      htmlFor="excel-upload"
+                      className="flex-1 px-4 py-3 bg-green-600 hover:bg-green-700 text-white text-center rounded-xl font-semibold cursor-pointer transition-all"
+                    >
+                      {entries.length > 0 ? 'Change Excel File' : 'Upload Excel File'}
+                    </label>
+                    {entries.length > 0 && (
+                      <button
+                        onClick={() => {
+                          setEntries([]);
+                          setRemainingEntries([]);
+                          // Reset file input
+                          const input = document.getElementById('excel-upload') as HTMLInputElement;
+                          if (input) input.value = '';
+                        }}
+                        className="px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition-all"
+                      >
+                        Clear Data
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Font Size */}
