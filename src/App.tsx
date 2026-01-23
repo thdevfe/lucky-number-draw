@@ -29,7 +29,7 @@ export default function LuckyNumberGenerator() {
     logoHeight: 64,
     primaryColor: '#00d4ff',
     secondaryColor: '#ff6b6b',
-    fontSize: 80,
+    fontSize: 120,
     generatingTime: 1500,
     digitStopDelay: 300
   };
@@ -384,7 +384,10 @@ export default function LuckyNumberGenerator() {
 
           {/* Display Area */}
           <div className="mb-12 min-h-[350px] flex flex-col items-center justify-center">
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
+            <div
+              className="flex flex-wrap justify-center mb-8"
+              style={{ gap: `${Math.max(16, settings.fontSize / 4)}px` }}
+            >
               {displayDigits.map((digit, index) => {
                 const isStopped = stoppedDigits.includes(index);
                 return (
@@ -393,12 +396,12 @@ export default function LuckyNumberGenerator() {
                     className="relative transition-all duration-300"
                   >
                     <div
-                      className="rounded-3xl shadow-2xl backdrop-blur-sm flex items-center justify-center relative overflow-hidden transition-all duration-300"
+                      className="rounded-[40px] shadow-2xl backdrop-blur-md flex items-center justify-center relative overflow-hidden transition-all duration-300"
                       style={{
-                        width: '140px',
-                        height: '180px',
+                        width: `${settings.fontSize * 1.5}px`,
+                        height: `${settings.fontSize * 2.2}px`,
                         background: `linear-gradient(135deg, ${settings.primaryColor}20 0%, ${settings.secondaryColor}20 100%)`,
-                        border: `4px solid ${isStopped ? settings.secondaryColor : settings.primaryColor}`,
+                        border: `${Math.max(4, settings.fontSize / 20)}px solid ${isStopped ? settings.secondaryColor : settings.primaryColor}`,
                         boxShadow: isStopped
                           ? `0 20px 60px rgba(0,0,0,0.3), 0 0 60px ${settings.secondaryColor}80`
                           : `0 20px 60px rgba(0,0,0,0.3), 0 0 40px ${settings.primaryColor}40`,
@@ -817,7 +820,7 @@ export default function LuckyNumberGenerator() {
                   <input
                     type="range"
                     min="40"
-                    max="120"
+                    max="300"
                     value={settings.fontSize}
                     onChange={(e) => handleSettingChange('fontSize', parseInt(e.target.value))}
                     className="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"
