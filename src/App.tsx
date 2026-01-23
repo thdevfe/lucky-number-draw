@@ -25,6 +25,8 @@ export default function LuckyNumberGenerator() {
     generatingSound: '',
     finishSound: '',
     bgSound: '',
+    bgFit: 'cover' as 'cover' | 'contain' | 'fill' | 'auto',
+    logoHeight: 64,
     primaryColor: '#00d4ff',
     secondaryColor: '#ff6b6b',
     fontSize: 80,
@@ -270,16 +272,19 @@ export default function LuckyNumberGenerator() {
   const displayDigits = animatingDigits.length > 0 ? animatingDigits : (finalNumber ? finalNumber.split('') : Array(settings.digits).fill('0'));
 
   return (
-    <div
-      className="min-h-screen relative bg-fixed overflow-y-auto"
-      style={{
-        background: settings.bgImage
-          ? `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${settings.bgImage})`
-          : `linear-gradient(135deg, #1a1a2e 0%, #1a1a2edd 100%)`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
+    <div className="min-h-screen relative overflow-y-auto">
+      {/* Fixed Background Overlay */}
+      <div
+        className="fixed inset-0 -z-10"
+        style={{
+          background: settings.bgImage
+            ? `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${settings.bgImage})`
+            : `linear-gradient(135deg, #1a1a2e 0%, #1a1a2edd 100%)`,
+          backgroundSize: settings.bgFit,
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
 
       {/* Audio elements */}
       {settings.generatingSound && (
@@ -294,7 +299,7 @@ export default function LuckyNumberGenerator() {
 
       {/* Animated background pattern */}
       {!settings.bgImage && (
-        <div className="absolute inset-0 opacity-10">
+        <div className="fixed inset-0 -z-10 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: `radial-gradient(circle at 25% 25%, ${settings.primaryColor} 2px, transparent 2px),
                              radial-gradient(circle at 75% 75%, ${settings.secondaryColor} 2px, transparent 2px)`,
@@ -309,8 +314,8 @@ export default function LuckyNumberGenerator() {
           <img
             src={settings.logoImage}
             alt="Company Logo"
-            className="h-16 w-auto object-contain"
-            style={{ maxWidth: '200px' }}
+            className="w-auto object-contain"
+            style={{ height: `${settings.logoHeight}px`, maxWidth: '200px' }}
           />
         </div>
       )}
@@ -608,6 +613,38 @@ export default function LuckyNumberGenerator() {
                     onChange={(e) => handleSettingChange('logoImage', e.target.value)}
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-500"
                   />
+                </div>
+
+                {/* Background Fit and Logo Height */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-300 mb-2">
+                      Background Fit
+                    </label>
+                    <select
+                      value={settings.bgFit}
+                      onChange={(e) => handleSettingChange('bgFit', e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    >
+                      <option value="cover">Cover (Full Screen)</option>
+                      <option value="contain">Contain (Show All)</option>
+                      <option value="fill">Fill (Stretch)</option>
+                      <option value="auto">Original Size</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-300 mb-2">
+                      Logo Max Height: {settings.logoHeight}px
+                    </label>
+                    <input
+                      type="number"
+                      min="20"
+                      max="300"
+                      value={settings.logoHeight}
+                      onChange={(e) => handleSettingChange('logoHeight', parseInt(e.target.value) || 20)}
+                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                  </div>
                 </div>
 
                 {/* Generating Sound URL */}
