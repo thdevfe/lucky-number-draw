@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Settings, X, RotateCcw, Loader2, Trophy, Trash2 } from 'lucide-react';
+import { Settings, X, RotateCcw, Loader2, Trophy, Trash2, Volume2, VolumeX } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import confetti from 'canvas-confetti';
 
@@ -24,6 +24,7 @@ export default function LuckyNumberGenerator() {
     logoImage: '',
     generatingSound: '',
     finishSound: '',
+    bgSound: '',
     primaryColor: '#00d4ff',
     secondaryColor: '#ff6b6b',
     fontSize: 80,
@@ -45,6 +46,9 @@ export default function LuckyNumberGenerator() {
   const intervalRefs = useRef<number[]>([]);
   const generatingSoundRef = useRef<HTMLAudioElement>(null);
   const finishSoundRef = useRef<HTMLAudioElement>(null);
+  const bgSoundRef = useRef<HTMLAudioElement>(null);
+
+  const [isSoundEnabled, setIsSoundEnabled] = useState(false);
 
   const handleSettingChange = (key: string, value: string | number) => {
     setSettings(prev => ({ ...prev, [key]: value }));
@@ -238,13 +242,27 @@ export default function LuckyNumberGenerator() {
   };
 
   useEffect(() => {
-    // Store current ref in a variable for cleanup
+    if (bgSoundRef.current) {
+      if (isSoundEnabled) {
+        bgSoundRef.current.play().catch(e => console.log('Audio play failed:', e));
+      } else {
+        bgSoundRef.current.pause();
+      }
+    }
+  }, [isSoundEnabled, settings.bgSound]);
+
+  useEffect(() => {
+    // Store current refs in variables for cleanup
     const currentGeneratingSound = generatingSoundRef.current;
+    const currentBgSound = bgSoundRef.current;
 
     return () => {
       intervalRefs.current.forEach(interval => clearInterval(interval));
       if (currentGeneratingSound) {
         currentGeneratingSound.pause();
+      }
+      if (currentBgSound) {
+        currentBgSound.pause();
       }
     };
   }, []);
@@ -269,6 +287,9 @@ export default function LuckyNumberGenerator() {
       )}
       {settings.finishSound && (
         <audio ref={finishSoundRef} src={settings.finishSound} />
+      )}
+      {settings.bgSound && (
+        <audio ref={bgSoundRef} src={settings.bgSound} loop />
       )}
 
       {/* Animated background pattern */}
@@ -306,6 +327,21 @@ export default function LuckyNumberGenerator() {
           title="Reset to Defaults"
         >
           <RotateCcw style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} size={28} />
+        </button>
+        <button
+          onClick={() => setIsSoundEnabled(!isSoundEnabled)}
+          className="p-4 backdrop-blur-md rounded-2xl hover:scale-105 transition-all shadow-xl"
+          style={{
+            background: `linear-gradient(135deg, ${settings.primaryColor}90 0%, ${settings.secondaryColor}90 100%)`,
+            border: '2px solid rgba(255,255,255,0.3)'
+          }}
+          title={isSoundEnabled ? "Disable Sound" : "Enable Sound"}
+        >
+          {isSoundEnabled ? (
+            <Volume2 style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} size={28} />
+          ) : (
+            <VolumeX style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} size={28} />
+          )}
         </button>
         <button
           onClick={() => setShowSettings(!showSettings)}
@@ -602,6 +638,20 @@ export default function LuckyNumberGenerator() {
                   />
                 </div>
 
+                {/* Background Sound URL */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Background Sound URL (Ambient music)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="https://example.com/ambient.mp3"
+                    value={settings.bgSound}
+                    onChange={(e) => handleSettingChange('bgSound', e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-500"
+                  />
+                </div>
+
                 {/* Divider */}
                 <div className="border-t border-gray-600 my-4"></div>
                 <p className="text-sm text-gray-400 mb-4">Or upload files directly:</p>
@@ -654,6 +704,19 @@ export default function LuckyNumberGenerator() {
                     type="file"
                     accept="audio/*"
                     onChange={handleFileUpload('finishSound')}
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                  />
+                </div>
+
+                {/* Background Sound Upload */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Upload Background Sound
+                  </label>
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    onChange={handleFileUpload('bgSound')}
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
                   />
                 </div>
