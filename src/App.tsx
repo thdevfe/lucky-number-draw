@@ -375,9 +375,8 @@ export default function LuckyNumberGenerator() {
           <h1 className="text-6xl md:text-7xl font-bold text-white mb-4 drop-shadow-2xl" style={{
             textShadow: `0 0 40px ${settings.primaryColor}80, 0 4px 20px rgba(0,0,0,0.5)`
           }}>
-            Lucky Number Generator
+            C&E Lottery
           </h1>
-
           <p className="text-xl text-gray-300 mb-12">
             Generate a {settings.digits}-digit random number ({settings.minValue} - {settings.maxValue})
           </p>
