@@ -332,40 +332,52 @@ export default function LuckyNumberGenerator() {
       <div className="fixed top-8 right-8 flex gap-3 z-30">
         <button
           onClick={resetToDefaults}
-          className="p-4 backdrop-blur-md rounded-2xl hover:scale-105 transition-all shadow-xl"
+          className="group relative p-4 rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 shadow-2xl overflow-hidden"
           style={{
-            background: `linear-gradient(135deg, ${settings.primaryColor}90 0%, ${settings.secondaryColor}90 100%)`,
-            border: '2px solid rgba(255,255,255,0.3)'
+            background: `linear-gradient(135deg, ${settings.primaryColor}30 0%, ${settings.secondaryColor}30 100%)`,
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: `1px solid ${settings.primaryColor}40`,
+            boxShadow: `0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 20px ${settings.primaryColor}30`
           }}
           title="Reset to Defaults"
         >
-          <RotateCcw style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} size={28} />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <RotateCcw className="relative z-10" style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }} size={24} />
         </button>
         <button
           onClick={() => setIsSoundEnabled(!isSoundEnabled)}
-          className="p-4 backdrop-blur-md rounded-2xl hover:scale-105 transition-all shadow-xl"
+          className="group relative p-4 rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 shadow-2xl overflow-hidden"
           style={{
-            background: `linear-gradient(135deg, ${settings.primaryColor}90 0%, ${settings.secondaryColor}90 100%)`,
-            border: '2px solid rgba(255,255,255,0.3)'
+            background: `linear-gradient(135deg, ${settings.primaryColor}30 0%, ${settings.secondaryColor}30 100%)`,
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: `1px solid ${settings.primaryColor}40`,
+            boxShadow: `0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 20px ${settings.primaryColor}30`
           }}
           title={isSoundEnabled ? "Disable Sound" : "Enable Sound"}
         >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           {isSoundEnabled ? (
-            <Volume2 style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} size={28} />
+            <Volume2 className="relative z-10" style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }} size={24} />
           ) : (
-            <VolumeX style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} size={28} />
+            <VolumeX className="relative z-10" style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }} size={24} />
           )}
         </button>
         <button
           onClick={() => setShowSettings(!showSettings)}
-          className="p-4 backdrop-blur-md rounded-2xl hover:scale-105 transition-all shadow-xl"
+          className="group relative p-4 rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 shadow-2xl overflow-hidden"
           style={{
-            background: `linear-gradient(135deg, ${settings.primaryColor}90 0%, ${settings.secondaryColor}90 100%)`,
-            border: '2px solid rgba(255,255,255,0.3)'
+            background: `linear-gradient(135deg, ${settings.primaryColor}30 0%, ${settings.secondaryColor}30 100%)`,
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: `1px solid ${settings.primaryColor}40`,
+            boxShadow: `0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 20px ${settings.primaryColor}30`
           }}
           title="Settings"
         >
-          <Settings style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }} size={28} />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <Settings className="relative z-10" style={{ color: '#ffffff', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }} size={24} />
         </button>
       </div>
 
@@ -398,7 +410,7 @@ export default function LuckyNumberGenerator() {
                       style={{
                         width: `${settings.fontSize * 1.5}px`,
                         height: `${settings.fontSize * 2.2}px`,
-                        background: `linear-gradient(135deg, ${settings.primaryColor}20 0%, ${settings.secondaryColor}20 100%)`,
+                        background: `linear-gradient(135deg, ${settings.primaryColor}30 0%, ${settings.secondaryColor}30 100%)`,
                         border: `${Math.max(4, settings.fontSize / 20)}px solid ${isStopped ? settings.secondaryColor : settings.primaryColor}`,
                         boxShadow: isStopped
                           ? `0 20px 60px rgba(0,0,0,0.3), 0 0 60px ${settings.secondaryColor}80`
@@ -444,18 +456,29 @@ export default function LuckyNumberGenerator() {
           <button
             onClick={startGeneration}
             disabled={isGenerating}
-            className="w-auto h-[70px] px-12 text-2xl font-bold rounded-2xl shadow-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4 mx-auto"
+            className="group relative w-auto h-[70px] px-16 text-2xl font-bold rounded-2xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4 mx-auto transition-all duration-300 shadow-2xl overflow-hidden"
             style={{
-              background: `linear-gradient(135deg, ${settings.primaryColor} 0%, ${settings.secondaryColor} 100%)`,
-              boxShadow: `0 20px 60px rgba(0,0,0,0.4), 0 0 40px ${settings.primaryColor}60`,
-              color: '#ffffff',
-              textShadow: '0 2px 4px rgba(0,0,0,0.5)'
+              background: `linear-gradient(135deg, ${settings.primaryColor}30 0%, ${settings.secondaryColor}30 100%)`,
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: `1px solid ${settings.primaryColor}50`,
+              boxShadow: `0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 30px ${settings.primaryColor}40`,
+              color: '#ffffff'
             }}
           >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div
+              className="absolute inset-0 opacity-30"
+              style={{
+                background: `linear-gradient(135deg, ${settings.primaryColor}40 0%, ${settings.secondaryColor}40 100%)`
+              }}
+            />
             {isGenerating && (
-              <Loader2 size={32} className="animate-spin" style={{ color: '#ffffff' }} />
+              <Loader2 size={32} className="animate-spin relative z-10" style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }} />
             )}
-            {isGenerating ? 'Generating...' : 'Generate'}
+            <span className="relative z-10 font-black tracking-wide" style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }}>
+              {isGenerating ? 'Generating...' : 'Generate'}
+            </span>
           </button>
 
           {/* Winners History Table */}
