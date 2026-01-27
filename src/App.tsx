@@ -28,7 +28,7 @@ export default function LuckyNumberGenerator() {
     bgFit: 'cover' as 'cover' | 'contain' | 'fill' | 'auto',
     logoHeight: 64,
     primaryColor: '#00d4ff',
-    secondaryColor: '#ff6b6b',
+    secondaryColor: '#50C878',
     fontSize: 120,
     generatingTime: 1500,
     digitStopDelay: 300
@@ -377,9 +377,8 @@ export default function LuckyNumberGenerator() {
           }}>
             C&E Lottery
           </h1>
-          <p className="text-xl text-gray-300 mb-12">
-            Generate a {settings.digits}-digit random number ({settings.minValue} - {settings.maxValue})
-          </p>
+          {/* <p className="text-xl text-gray-300 mb-12">
+          </p> */}
 
           {/* Display Area */}
           <div className="mb-12 min-h-[350px] flex flex-col items-center justify-center">
@@ -445,7 +444,7 @@ export default function LuckyNumberGenerator() {
           <button
             onClick={startGeneration}
             disabled={isGenerating}
-            className="w-72 h-20 text-2xl font-bold rounded-2xl shadow-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4 mx-auto"
+            className="w-auto h-[70px] px-12 text-2xl font-bold rounded-2xl shadow-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4 mx-auto"
             style={{
               background: `linear-gradient(135deg, ${settings.primaryColor} 0%, ${settings.secondaryColor} 100%)`,
               boxShadow: `0 20px 60px rgba(0,0,0,0.4), 0 0 40px ${settings.primaryColor}60`,
@@ -827,6 +826,48 @@ export default function LuckyNumberGenerator() {
                       accentColor: settings.primaryColor
                     }}
                   />
+                </div>
+
+                {/* Theme Colors */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-300 mb-2">
+                      Primary Color
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={settings.primaryColor}
+                        onChange={(e) => handleSettingChange('primaryColor', e.target.value)}
+                        className="w-12 h-12 rounded-lg cursor-pointer bg-gray-700 border border-gray-600"
+                      />
+                      <input
+                        type="text"
+                        value={settings.primaryColor}
+                        onChange={(e) => handleSettingChange('primaryColor', e.target.value)}
+                        className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-lg text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-300 mb-2">
+                      Secondary Color
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={settings.secondaryColor}
+                        onChange={(e) => handleSettingChange('secondaryColor', e.target.value)}
+                        className="w-12 h-12 rounded-lg cursor-pointer bg-gray-700 border border-gray-600"
+                      />
+                      <input
+                        type="text"
+                        value={settings.secondaryColor}
+                        onChange={(e) => handleSettingChange('secondaryColor', e.target.value)}
+                        className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-lg text-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Generating Time */}
