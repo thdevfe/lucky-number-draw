@@ -27,8 +27,8 @@ export default function LuckyNumberGenerator() {
     bgSound: '',
     bgFit: 'cover' as 'cover' | 'contain' | 'fill' | 'auto',
     logoHeight: 64,
-    primaryColor: '#00d4ff',
-    secondaryColor: '#50C878',
+    primaryColor: '#08bcd4',
+    secondaryColor: '#00d4ff',
     fontSize: 120,
     generatingTime: 1500,
     digitStopDelay: 300
