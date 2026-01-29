@@ -320,8 +320,8 @@ export default function LuckyNumberGenerator() {
       {!settings.bgImage && (
         <div className="fixed inset-0 -z-10 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: `radial- gradient(circle at 25 % 25 %, ${settings.primaryColor} 2px, transparent 2px),
-          radial - gradient(circle at 75 % 75 %, ${settings.secondaryColor} 2px, transparent 2px)`,
+            backgroundImage: `radial-gradient(circle at 25% 25%, ${settings.primaryColor} 2px, transparent 2px),
+                             radial-gradient(circle at 75% 75%, ${settings.secondaryColor} 2px, transparent 2px)`,
             backgroundSize: '50px 50px'
           }}></div>
         </div>
@@ -334,13 +334,34 @@ export default function LuckyNumberGenerator() {
             src={settings.logoImage}
             alt="Company Logo"
             className="w-auto object-contain"
-            style={{ height: `${settings.logoHeight} px`, maxWidth: '200px' }}
+            style={{ height: `${settings.logoHeight}px`, maxWidth: '200px' }}
           />
         </div>
       )}
 
-      {/* Settings and Reset Buttons */}
+      {/* Toolbar Buttons */}
       <div className="fixed top-8 right-8 flex gap-3 z-30">
+        <button
+          onClick={startGeneration}
+          disabled={isGenerating}
+          className="group relative px-6 py-4 rounded-2xl hover:scale-105 active:scale-95 disabled:opacity-50 transition-all duration-300 shadow-2xl overflow-hidden flex items-center gap-3"
+          style={{
+            background: `linear-gradient(135deg, ${settings.primaryColor} 0%, ${settings.secondaryColor} 100%)`,
+            border: `1px solid ${settings.primaryColor}50`,
+            boxShadow: `0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 20px ${settings.primaryColor}40`,
+            color: '#ffffff'
+          }}
+          title="Start Lucky Draw"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {isGenerating && (
+            <Loader2 size={24} className="animate-spin relative z-10" />
+          )}
+          <span className="relative z-10 font-bold tracking-wide">
+            {isGenerating ? 'Generating...' : 'Generate'}
+          </span>
+        </button>
+
         <button
           onClick={resetToDefaults}
           className="group relative p-4 rounded-2xl hover:scale-110 active:scale-95 transition-all duration-300 shadow-2xl overflow-hidden"
@@ -419,7 +440,7 @@ export default function LuckyNumberGenerator() {
           </p> */}
 
           {/* Display Area */}
-          <div className="mb-12 min-h-[350px] flex flex-col items-center justify-center">
+          <div className="min-h-[350px] flex flex-col items-center justify-center">
             <div
               className="flex flex-wrap justify-center mb-8"
               style={{ gap: `${Math.max(16, settings.fontSize / 4)}px` }}
@@ -477,35 +498,6 @@ export default function LuckyNumberGenerator() {
               </div>
             )}
           </div>
-
-          {/* Generate button */}
-          <button
-            onClick={startGeneration}
-            disabled={isGenerating}
-            className="group relative w-auto h-[70px] px-16 text-2xl font-bold rounded-2xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4 mx-auto transition-all duration-300 shadow-2xl overflow-hidden"
-            style={{
-              background: `linear-gradient(135deg, ${settings.primaryColor}30 0%, ${settings.secondaryColor}30 100%)`,
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: `1px solid ${settings.primaryColor}50`,
-              boxShadow: `0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 30px ${settings.primaryColor}40`,
-              color: '#ffffff'
-            }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div
-              className="absolute inset-0 opacity-30"
-              style={{
-                background: `linear-gradient(135deg, ${settings.primaryColor}40 0%, ${settings.secondaryColor}40 100%)`
-              }}
-            />
-            {isGenerating && (
-              <Loader2 size={32} className="animate-spin relative z-10" style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }} />
-            )}
-            <span className="relative z-10 font-black tracking-wide" style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }}>
-              {isGenerating ? 'Generating...' : 'Generate'}
-            </span>
-          </button>
         </div>
       </div>
 
@@ -947,100 +939,103 @@ export default function LuckyNumberGenerator() {
             </div>
           </div>
         </div>
-      )}
+      )
+      }
 
       {/* Winners History Modal */}
-      {showHistory && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-xl flex items-center justify-center z-30 p-4">
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl max-w-4xl w-full border border-gray-700" style={{
-            maxHeight: '80vh',
-            boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 100px rgba(0,212,255,0.3)'
-          }}>
-            <div className="flex justify-between items-center p-6 border-b border-gray-700 rounded-t-3xl" style={{
-              background: `linear-gradient(135deg, ${settings.primaryColor}30 0%, ${settings.secondaryColor}30 100%)`
+      {
+        showHistory && (
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-xl flex items-center justify-center z-30 p-4">
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl max-w-4xl w-full border border-gray-700" style={{
+              maxHeight: '80vh',
+              boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 100px rgba(0,212,255,0.3)'
             }}>
-              <h2 className="text-3xl font-bold text-white flex items-center gap-3">
-                <Trophy className="text-yellow-400" size={32} />
-                Winners History
-              </h2>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => {
-                    if (confirm('Clear all winners history?')) setWinners([]);
-                  }}
-                  className="p-2 hover:bg-white/10 rounded-xl transition-all text-gray-400 hover:text-red-400"
-                  title="Clear History"
-                >
-                  <Trash2 size={24} />
-                </button>
-                <button
-                  onClick={() => setShowHistory(false)}
-                  className="p-2 hover:scale-110 transition-all rounded-xl shadow-lg flex items-center justify-center"
-                  style={{
-                    background: `linear-gradient(135deg, ${settings.primaryColor} 0%, ${settings.secondaryColor} 100%)`,
-                    color: '#ffffff',
-                    textShadow: '0 1px 2px rgba(0,0,0,0.5)',
-                    border: '1px solid rgba(255,255,255,0.3)'
-                  }}
-                >
-                  <X size={24} />
-                </button>
+              <div className="flex justify-between items-center p-6 border-b border-gray-700 rounded-t-3xl" style={{
+                background: `linear-gradient(135deg, ${settings.primaryColor}30 0%, ${settings.secondaryColor}30 100%)`
+              }}>
+                <h2 className="text-3xl font-bold text-white flex items-center gap-3">
+                  <Trophy className="text-yellow-400" size={32} />
+                  Winners History
+                </h2>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      if (confirm('Clear all winners history?')) setWinners([]);
+                    }}
+                    className="p-2 hover:bg-white/10 rounded-xl transition-all text-gray-400 hover:text-red-400"
+                    title="Clear History"
+                  >
+                    <Trash2 size={24} />
+                  </button>
+                  <button
+                    onClick={() => setShowHistory(false)}
+                    className="p-2 hover:scale-110 transition-all rounded-xl shadow-lg flex items-center justify-center"
+                    style={{
+                      background: `linear-gradient(135deg, ${settings.primaryColor} 0%, ${settings.secondaryColor} 100%)`,
+                      color: '#ffffff',
+                      textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                      border: '1px solid rgba(255,255,255,0.3)'
+                    }}
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(80vh - 100px)' }}>
+                {winners.length > 0 ? (
+                  <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+                    <table className="w-full text-left border-collapse">
+                      <thead className="sticky top-0 bg-gray-900 z-10">
+                        <tr className="bg-white/10">
+                          <th className="px-8 py-5 text-sm font-bold text-gray-300 uppercase tracking-wider">Number</th>
+                          <th className="px-8 py-5 text-sm font-bold text-gray-300 uppercase tracking-wider">Winner Name</th>
+                          <th className="px-8 py-5 text-sm font-bold text-gray-300 uppercase tracking-wider text-right">Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {winners.map((winner, idx) => (
+                          <tr
+                            key={winner.id}
+                            className={`group transition-colors ${idx === 0 ? 'bg-white/5' : 'hover:bg-white/5'}`}
+                          >
+                            <td className="px-8 py-5">
+                              <span className="font-mono text-3xl font-bold" style={{
+                                color: settings.primaryColor,
+                                textShadow: `0 0 20px ${settings.primaryColor}50`
+                              }}>
+                                {winner.number}
+                              </span>
+                            </td>
+                            <td className="px-8 py-5">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xl text-white font-medium">{winner.user}</span>
+                                {idx === 0 && (
+                                  <span className="px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-500 text-xs font-bold border border-yellow-500/30">
+                                    LATEST
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+                            <td className="px-8 py-5 text-right text-gray-400 font-mono">
+                              {winner.timestamp}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="text-center py-20">
+                    <Trophy size={64} className="mx-auto text-gray-600 mb-4 opacity-20" />
+                    <p className="text-gray-400 text-lg">No winners drawn yet.</p>
+                  </div>
+                )}
               </div>
             </div>
-
-            <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(80vh - 100px)' }}>
-              {winners.length > 0 ? (
-                <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
-                  <table className="w-full text-left border-collapse">
-                    <thead className="sticky top-0 bg-gray-900 z-10">
-                      <tr className="bg-white/10">
-                        <th className="px-8 py-5 text-sm font-bold text-gray-300 uppercase tracking-wider">Number</th>
-                        <th className="px-8 py-5 text-sm font-bold text-gray-300 uppercase tracking-wider">Winner Name</th>
-                        <th className="px-8 py-5 text-sm font-bold text-gray-300 uppercase tracking-wider text-right">Time</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {winners.map((winner, idx) => (
-                        <tr
-                          key={winner.id}
-                          className={`group transition-colors ${idx === 0 ? 'bg-white/5' : 'hover:bg-white/5'}`}
-                        >
-                          <td className="px-8 py-5">
-                            <span className="font-mono text-3xl font-bold" style={{
-                              color: settings.primaryColor,
-                              textShadow: `0 0 20px ${settings.primaryColor}50`
-                            }}>
-                              {winner.number}
-                            </span>
-                          </td>
-                          <td className="px-8 py-5">
-                            <div className="flex items-center gap-2">
-                              <span className="text-xl text-white font-medium">{winner.user}</span>
-                              {idx === 0 && (
-                                <span className="px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-500 text-xs font-bold border border-yellow-500/30">
-                                  LATEST
-                                </span>
-                              )}
-                            </div>
-                          </td>
-                          <td className="px-8 py-5 text-right text-gray-400 font-mono">
-                            {winner.timestamp}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <div className="text-center py-20">
-                  <Trophy size={64} className="mx-auto text-gray-600 mb-4 opacity-20" />
-                  <p className="text-gray-400 text-lg">No winners drawn yet.</p>
-                </div>
-              )}
-            </div>
           </div>
-        </div>
-      )}
-    </div >
+        )
+      }
+    </div>
   );
 }
