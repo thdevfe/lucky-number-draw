@@ -30,8 +30,8 @@ export default function LuckyNumberGenerator() {
     primaryColor: '#08bcd4',
     secondaryColor: '#ffffff',
     fontSize: 140,
-    generatingTime: 1500,
-    digitStopDelay: 300
+    generatingTime: 2000,
+    digitStopDelay: 2000
   };
 
   const [settings, setSettings] = useState(defaultSettings);
@@ -340,7 +340,7 @@ export default function LuckyNumberGenerator() {
       )}
 
       {/* Toolbar Buttons */}
-      <div className="fixed top-8 right-8 flex gap-3 z-30">
+      <div className="fixed bottom-8 right-8 flex gap-3 z-30">
         <button
           onClick={startGeneration}
           disabled={isGenerating}
@@ -492,8 +492,9 @@ export default function LuckyNumberGenerator() {
             {/* Winner Name Display */}
             {!isGenerating && finalUser && (
               <div className="animate-in fade-in zoom-in duration-500 flex items-center justify-center gap-3 px-10 py-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl">
+                <Trophy className="relative z-10" style={{ color: '#f5f506ff', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }} size={28} />
                 <span className="text-4xl font-bold text-white tracking-wide">
-                  👤 {finalUser}
+                  {finalUser}
                 </span>
               </div>
             )}
